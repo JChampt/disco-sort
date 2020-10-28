@@ -43,13 +43,13 @@ running = True
 while running: 
 
     for event in pygame.event.get():
-        print(event)
+        #print(event)
         if event.type == pygame.QUIT:
             running = False
         # looks for keypresses and changes the amount of bars in the array
         # this does overwrite the array.  I will need to change this to just tweak
         # the way the array is displayed? 
-        if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
                 array = gen_array(size = (screen_width // 1))
             if event.key == pygame.K_2:
@@ -64,6 +64,7 @@ while running:
     screen.fill(screen_background_color)
     draw_bars(array)
     pygame.display.flip()
+
     clock.tick(6)
     
 pygame.quit()
