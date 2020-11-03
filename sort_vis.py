@@ -1,7 +1,6 @@
 import pygame
 import events
-from algorithms import *
-from classes import *
+from classes import Graph
 
 pygame.init()
 
@@ -9,8 +8,8 @@ def main():
 
     screen_width, screen_height = 1440, 810
     screen = pygame.display.set_mode((screen_width, screen_height))
-    clock = pygame.time.Clock()
     pygame.display.set_caption('Sorting algorithm visualization')
+    clock = pygame.time.Clock()
 
     graph = Graph(screen)
     graph.gen_array(rand_colors=True)
