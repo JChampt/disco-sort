@@ -1,6 +1,7 @@
 import pygame
 import random
-from algorithms import *
+import menu
+import algorithms
 from itertools import cycle
 
 class Graph:
@@ -11,20 +12,42 @@ class Graph:
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
         self.background_color = 0, 0, 0 #black
-        self.gen_array()
+        self.algorithm = 'bubble'
+
+        self.bars = []
+        self.barwidth = 8
+        self.issorted = False
+        self.issorting = False
+
+        self.gen_array(self.barwidth)
+        self.menu = menu.make_menu(self)
+
+        self.font = pygame.font.SysFont('dejavusansmono', 18)
+        self.large_font = pygame.font.SysFont('dejavusansmono', 70)
+
+
+    def print_text(self, txt, fontsize = 'normal', location = (0,0), color = (255, 255, 255)):
+        if fontsize == 'normal':
+            msg = self.font.render(txt, True, color)
+        else:
+            msg = self.large_font.render(txt, True, color)
+        self.screen.blit(msg, location)
+        #self.screen.flip()
+        pygame.display.flip()
+
 
     def gen_array(self, barwidth = 8, rand_colors = False):
         size = (self.screen_width // barwidth)
         self.clear_array()  # ensure an empty array when generating a new one
 
-        for i, x in enumerate(random.choices(range(1, self.screen_height - 10), k=size)):
+        for i, x in enumerate(random.choices(range(1, self.screen_height - 15), k=size)):
             self.bars.append(Bar(position = i, value = x))
         if rand_colors == True:
             for bar in self.bars:
                 bar.random_color()
 
     def clear_array(self):
-        self.bars = []
+        self.bars.clear()
         self.issorted = False
     
     def draw_bars(self, rand_colors=False):
@@ -34,7 +57,7 @@ class Graph:
         x, y = 0, self.screen_height
 
         for bar in self.bars:
-            if rand_colors == True:
+            if rand_colors == True or self.issorted == True:
                 if random.randint(1,100) <= 20:
                     bar.random_color() 
             pygame.draw.rect(self.screen, bar.color, [x, y, barwidth, -(bar.height)])
@@ -65,8 +88,28 @@ class Graph:
         rects.append(pygame.draw.rect(self.screen, bar.color, [x, y, barwidth, -(bar.height)]))
         pygame.display.update(rects)
 
-    def sort(self, algorithm):
-        algorithm(self)
+    def sort(self):
+        self.draw_bars()
+        self.issorting = True
+        if self.algorithm == 'bubble':
+            algorithms.bubble_sort(self)
+        self.issorting = False
+
+    def set_screensize(self, size):
+        self.screen_width, self.screen_height = size
+
+    def update_screensize(self):
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+
+    def display_menu(self):
+        self.menu.set_relative_position(50,50)
+        self.menu.mainloop(self.screen)
+
+    def close_menu(self):
+        self.update_screensize()
+        self.gen_array(self.barwidth, rand_colors = True)
+        self.menu.disable()
+        
 
 
 class Bar:
@@ -83,7 +126,7 @@ class Bar:
             (6,214,160),
             (17,138,178),
             (7,59,76) 
-            ])
+        ])
 
     def __str__(self):
         return "Bar object at position: {} with a value of: {} and color of: {}".format(self.position, self.value, self.color)

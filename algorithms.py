@@ -1,29 +1,28 @@
-import pygame
+import events
 
-def bubble_sort(g):
+def bubble_sort(graph):
     """ bubble sorts a graph object """
 
-    lst = g.bars
+    bars = graph.bars
     j = 0
     while True:
         count = 0
-        for i in range(0, len(lst)-j-1):
+        for i in range(0, len(bars)-j-1):
 
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_0:
-                    return None
+            if events.sort_event(graph) == "Stop sort": # stop on sort keypress
+                return None
 
-            if lst[i] > lst[i+1]:
-                lst[i], lst[i+1] = lst[i+1], lst[i]  
+            if bars[i] > bars[i+1]:
+                bars[i], bars[i+1] = bars[i+1], bars[i]  
                 count += 1
                 
-                lst[i].position = i
-                lst[i+1].position = i+1
+                bars[i].position = i
+                bars[i+1].position = i+1
 
-                g.draw_two_bars(lst[i], lst[i+1])
+                graph.draw_two_bars(bars[i], bars[i+1])
 
         j += 1
         if count == 0:
-            g.issorted = True
+            graph.issorted = True
             return None
 
