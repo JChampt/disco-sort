@@ -1,8 +1,9 @@
 import pygame_menu
 
 def make_menu(graph):
+    """ Main menu for the program. Alows adjustment of all settings """
     _menu = pygame_menu.Menu(
-        450, 450, "Main Menu", 
+        350, 450, "Main Menu", 
         theme=pygame_menu.themes.THEME_SOLARIZED, 
         onclose=graph.close_menu
     )
@@ -28,8 +29,42 @@ def make_menu(graph):
     _menu.add_selector('Window size:', window_options, onchange=set_windowsize)
     _menu.add_selector('Bar size:', bar_options, onchange=set_barsize)
     _menu.add_selector('Algorithm:', algorithm_options, onchange=set_algorithm)
-    _menu.add_button('Quit', pygame_menu.events.EXIT)
+    _menu.add_button('Quit Program', pygame_menu.events.EXIT)
     
+    return _menu
+
+def make_help_menu():
+    """ Small text help menu so that users know the keybinds and settings """
+    _menu = pygame_menu.Menu(
+        350, 450, "Help", 
+        theme=pygame_menu.themes.THEME_SOLARIZED, 
+        onclose=pygame_menu.events.CLOSE
+    )
+
+    _menu.add_label(
+        "Press ESC to Enable/Disable Menu", 
+        max_char=-1, font_size=25, 
+        font_name = 'ubuntu'
+    )
+
+    _menu.add_label(
+        "Press ENTER to Start/Stop sort", 
+        max_char=-1, font_size=25, 
+        font_name = 'ubuntu'
+    )
+
+    _menu.add_label(
+        "Press SPACE to Pause", 
+        max_char=-1, font_size=25, 
+        font_name = 'ubuntu'
+    )
+
+    _menu.add_label(
+        "Press Number keys 1-5 to change barsize and regenerate the array", 
+        max_char=-1, font_size=25, 
+        font_name = 'ubuntu'
+    )
+
     return _menu
 
 def set_windowsize(_, value, graph):

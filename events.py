@@ -1,6 +1,6 @@
 import pygame
 
-#dictionary of 5 possible bar widths in pixels 
+#dictionary of bar widths. Evenly divides the screen width by a value. 
 barwidths = {
         pygame.K_1:2, 
         pygame.K_2:4, 
@@ -10,7 +10,7 @@ barwidths = {
 } 
 
 def keypress(graph):
-    """ process keypresses during main loop returns running bool """
+    """ process keypresses during main loop returns bool to toggle running state """
     for event in pygame.event.get():
 
         if event.type == pygame.QUIT:
@@ -29,6 +29,10 @@ def keypress(graph):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             graph.display_menu()
             graph.menu.toggle()
+
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_h:
+            graph.display_help()
+            graph.help_menu.toggle()
 
     return True
 

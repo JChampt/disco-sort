@@ -21,6 +21,7 @@ class Graph:
 
         self.gen_array(self.barwidth)
         self.menu = menu.make_menu(self)
+        self.help_menu = menu.make_help_menu()
 
         self.font = pygame.font.SysFont('dejavusansmono', 18)
         self.large_font = pygame.font.SysFont('dejavusansmono', 70)
@@ -40,7 +41,7 @@ class Graph:
         size = (self.screen_width // barwidth)
         self.clear_array()  # ensure an empty array when generating a new one
 
-        for i, x in enumerate(random.choices(range(1, self.screen_height - 15), k=size)):
+        for i, x in enumerate(random.choices(range(1, self.screen_height - 18), k=size)):
             self.bars.append(Bar(position = i, value = x))
         if rand_colors == True:
             for bar in self.bars:
@@ -105,12 +106,15 @@ class Graph:
         self.menu.set_relative_position(50,50)
         self.menu.mainloop(self.screen)
 
+    def display_help(self):
+        self.help_menu.set_relative_position(50,50)
+        self.help_menu.mainloop(self.screen)
+
     def close_menu(self):
         self.update_screensize()
         self.gen_array(self.barwidth, rand_colors = True)
         self.menu.disable()
         
-
 
 class Bar:
     """ a bar in Graph to be sorted """

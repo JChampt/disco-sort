@@ -19,7 +19,7 @@ def main():
 
         running = events.keypress(graph) # keypress calls some graph object methods
         graph.draw_bars()
-        graph.print_text("ESC for menu")
+        graph.print_text("ESC for menu or 'h' for help")
         clock.tick(6)
 
     pygame.quit()
