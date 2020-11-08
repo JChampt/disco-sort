@@ -14,6 +14,9 @@ class Graph:
         self.background_color = 0, 0, 0 #black
         self.algorithm = 'bubble'
 
+        # sets the delay in milliseconds
+        self.speed = 0
+
         self.bars = []
         self.barwidth = 8
         self.issorted = False
@@ -26,14 +29,12 @@ class Graph:
         self.font = pygame.font.SysFont('dejavusansmono', 18)
         self.large_font = pygame.font.SysFont('dejavusansmono', 70)
 
-
     def print_text(self, txt, fontsize = 'normal', location = (0,0), color = (255, 255, 255)):
         if fontsize == 'normal':
             msg = self.font.render(txt, True, color)
         else:
             msg = self.large_font.render(txt, True, color)
         self.screen.blit(msg, location)
-        #self.screen.flip()
         pygame.display.flip()
 
 
@@ -41,7 +42,7 @@ class Graph:
         size = (self.screen_width // barwidth)
         self.clear_array()  # ensure an empty array when generating a new one
 
-        for i, x in enumerate(random.choices(range(1, self.screen_height - 18), k=size)):
+        for i, x in enumerate(random.choices(range(1, self.screen_height - 25), k=size)):
             self.bars.append(Bar(position = i, value = x))
         if rand_colors == True:
             for bar in self.bars:
@@ -66,7 +67,10 @@ class Graph:
 
         pygame.display.flip()
 
-    def draw_two_bars(self, bar1, bar2):
+    def draw_two_bars(self, i, j):
+        """ draws bars and index i & j to the screen """
+        bar1 = self.bars[i]
+        bar2 = self.bars[j]
         barwidth = self.screen_width // len(self.bars)
         x1 = bar1.position * barwidth
         x2 = bar2.position * barwidth
@@ -79,6 +83,8 @@ class Graph:
         rects.append(pygame.draw.rect(self.screen, (0,0,0), [x2, y, barwidth, -(self.screen_height)]))
         rects.append(pygame.draw.rect(self.screen, bar2.color, [x2, y, barwidth, -(bar2.height)]))
 
+
+        pygame.time.delay(self.speed)
         pygame.display.update(rects)
 
     def draw_single_bar(self, bar):
@@ -94,6 +100,10 @@ class Graph:
         self.issorting = True
         if self.algorithm == 'bubble':
             algorithms.bubble_sort(self)
+        if self.algorithm == 'quick':
+            algorithms.quick_sort(self, isfirst_call = True)
+            if algorithms.stop_recursive_sort == False:
+                self.issorted = True
         self.issorting = False
 
     def set_screensize(self, size):
@@ -114,7 +124,33 @@ class Graph:
         self.update_screensize()
         self.gen_array(self.barwidth, rand_colors = True)
         self.menu.disable()
-        
+
+    def adjust_speed(self, adjustment):
+        speeds = (135, 45, 15, 5, 0)
+        i = speeds.index(self.speed)
+        i += adjustment
+        if i < 0 or i > len(speeds)-1:
+            return None
+        else:
+            self.speed = speeds[i]
+
+    def get_speed(self):
+        speeds = {135:"slowest", 45:"slow", 15:"average", 5:"fast", 0:"fastest"}
+        try: return speeds[self.speed]
+        except:
+            return "unknown"
+
+    def display_helptext(self):
+        self.print_text("ESC for menu or 'h' for help")
+        self.print_text(
+                "Sort algorithm: " + self.algorithm,
+            location = (self.screen_width - 425, 0)
+        )
+        self.print_text(
+                "Speed: " + self.get_speed(),
+                location = (self.screen_width - 165, 0)
+        )
+
 
 class Bar:
     """ a bar in Graph to be sorted """
