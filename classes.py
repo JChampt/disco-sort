@@ -29,15 +29,29 @@ class Graph:
         self.font = pygame.font.SysFont('dejavusansmono', 18)
         self.large_font = pygame.font.SysFont('dejavusansmono', 70)
 
-    def print_text(self, txt, fontsize = 'normal', location = (0,0), color = (255, 255, 255)):
-        if fontsize == 'normal':
-            msg = self.font.render(txt, True, color)
+    def set_screensize(self, size):
+        self.screen_width, self.screen_height = size
+
+    def update_screensize(self):
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+
+    def adjust_speed(self, adjustment):
+        speeds = (135, 45, 15, 5, 0)
+        i = speeds.index(self.speed)
+        i += adjustment
+        if i < 0 or i > len(speeds)-1:
+            return None
         else:
-            msg = self.large_font.render(txt, True, color)
-        self.screen.blit(msg, location)
-        pygame.display.flip()
+            self.speed = speeds[i]
+
+    def get_speed(self):
+        speeds = {135:"slowest", 45:"slow", 15:"average", 5:"fast", 0:"fastest"}
+        try: return speeds[self.speed]
+        except:
+            return "unknown"
 
 
+    # work with the array of bars
     def gen_array(self, barwidth = 8, rand_colors = False):
         size = (self.screen_width // barwidth)
         self.clear_array()  # ensure an empty array when generating a new one
@@ -51,7 +65,30 @@ class Graph:
     def clear_array(self):
         self.bars.clear()
         self.issorted = False
+
+    def update_bar_positions(self):
+        for i, bar in enumerate(self.bars):
+            bar.position = i
     
+    def sort(self):
+        self.draw_bars()
+        self.issorting = True
+        if self.algorithm == 'bubble':
+            algorithms.bubble_sort(self)
+
+        if self.algorithm == 'quick':
+            algorithms.quick_sort(self, isfirst_call = True)
+            if algorithms.stop_recursive_sort == False:
+                self.issorted = True
+
+        if self.algorithm == 'merge':
+            algorithms.merge_sort(self, isfirst_call = True)
+            if algorithms.stop_recursive_sort == False:
+                self.issorted = True
+
+        self.issorting = False
+
+    # methods to draw bar objects to the screen
     def draw_bars(self, rand_colors=False):
         """ draws a bar graph from an input array of values on the screen """
         self.screen.fill(self.background_color)
@@ -65,6 +102,7 @@ class Graph:
             pygame.draw.rect(self.screen, bar.color, [x, y, barwidth, -(bar.height)])
             x += barwidth
 
+        pygame.time.delay(self.speed)
         pygame.display.flip()
 
     def draw_two_bars(self, i, j):
@@ -87,30 +125,24 @@ class Graph:
         pygame.time.delay(self.speed)
         pygame.display.update(rects)
 
-    def draw_single_bar(self, bar):
+    def draw_single_bar(self, i):
+        bar = self.bars[i]
         barwidth = self.screen_width // len(self.bars)
         x, y = bar.position * barwidth, self.screen_height
+
         rects = []
-        rects.append(pygame.draw.rect(self.screen, (0,0,0), [x, y, barwidth, -(self.screen_height)]))
-        rects.append(pygame.draw.rect(self.screen, bar.color, [x, y, barwidth, -(bar.height)]))
+        rects.append(
+            pygame.draw.rect(self.screen, (0,0,0), 
+            [x, y, barwidth, -(self.screen_height)])
+        )
+        rects.append(
+            pygame.draw.rect(self.screen, bar.color, 
+            [x, y, barwidth, -(bar.height)])
+        )
+
+        pygame.time.delay(self.speed)
         pygame.display.update(rects)
 
-    def sort(self):
-        self.draw_bars()
-        self.issorting = True
-        if self.algorithm == 'bubble':
-            algorithms.bubble_sort(self)
-        if self.algorithm == 'quick':
-            algorithms.quick_sort(self, isfirst_call = True)
-            if algorithms.stop_recursive_sort == False:
-                self.issorted = True
-        self.issorting = False
-
-    def set_screensize(self, size):
-        self.screen_width, self.screen_height = size
-
-    def update_screensize(self):
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
     def display_menu(self):
         self.menu.set_relative_position(50,50)
@@ -125,20 +157,13 @@ class Graph:
         self.gen_array(self.barwidth, rand_colors = True)
         self.menu.disable()
 
-    def adjust_speed(self, adjustment):
-        speeds = (135, 45, 15, 5, 0)
-        i = speeds.index(self.speed)
-        i += adjustment
-        if i < 0 or i > len(speeds)-1:
-            return None
+    def print_text(self, txt, fontsize = 'normal', location = (0,0), color = (255, 255, 255)):
+        if fontsize == 'normal':
+            msg = self.font.render(txt, True, color)
         else:
-            self.speed = speeds[i]
-
-    def get_speed(self):
-        speeds = {135:"slowest", 45:"slow", 15:"average", 5:"fast", 0:"fastest"}
-        try: return speeds[self.speed]
-        except:
-            return "unknown"
+            msg = self.large_font.render(txt, True, color)
+        self.screen.blit(msg, location)
+        pygame.display.flip()
 
     def display_helptext(self):
         self.print_text("ESC for menu or 'h' for help")

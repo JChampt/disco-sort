@@ -24,7 +24,8 @@ def make_menu(graph):
 
     algorithm_options = [
         ('Bubble Sort', 'bubble', graph),
-        ('Quick Sort', 'quick', graph)
+        ('Quick Sort', 'quick', graph),
+        ('Merge Sort', 'merge', graph)
     ]
 
     speed_options = [
@@ -47,7 +48,7 @@ def make_help_menu():
     """ Small text help menu so that users know the keybinds and settings """
 
     _menu = pygame_menu.Menu(
-        400, 450, "Help", 
+        425, 495, "Help", 
         theme=pygame_menu.themes.THEME_SOLARIZED, 
         onclose=pygame_menu.events.CLOSE
     )
@@ -77,7 +78,7 @@ def make_help_menu():
     )
 
     _menu.add_label(
-        "- Press 'q' for Quicksort or 'b' for Bubblesort", 
+        "- Press 'q' for Quicksort, 'm' for Mergesort or 'b' for Bubblesort", 
         max_char=-1, font_size=25, 
         font_name = 'ubuntu'
     )

@@ -1,5 +1,14 @@
 import events
 
+# utilities
+stop_recursive_sort = False
+def swap_bars(graph, i, j):
+    bars = graph.bars
+    bars[i], bars[j] = bars[j], bars[i]
+    bars[i].position = i
+    bars[j].position = j
+
+
 def bubble_sort(graph):
     """ bubble sorts a graph object """
 
@@ -21,7 +30,7 @@ def bubble_sort(graph):
             graph.issorted = True
             return None
 
-stop_recursive_sort = False
+
 def quick_sort(graph, left = 0, right = None, isfirst_call = False):
     global stop_recursive_sort
     if isfirst_call == True:
@@ -90,8 +99,57 @@ def set_pivot(graph, left, right):
     return None
 
 
-def swap_bars(graph, i, j):
-    bars = graph.bars
-    bars[i], bars[j] = bars[j], bars[i]
-    bars[i].position = i
-    bars[j].position = j
+def merge_sort(graph, left = 0, right = None, isfirst_call = False):
+    global stop_recursive_sort
+    if isfirst_call == True:
+        stop_recursive_sort = False
+    if right == None:
+        right = len(graph.bars) -1 
+
+    for j in range(left, right):
+        if events.sort_event(graph) == "Stop sort":
+            stop_recursive_sort = True
+    if stop_recursive_sort == True:
+        return None
+
+    if left >= right:
+        return None
+
+    middle = left + (right - left) // 2
+    merge_sort(graph, left, middle)
+    merge_sort(graph, middle + 1, right)
+
+    merge(graph, left, middle, right)
+
+def merge(graph, left, middle, right):
+    global stop_recursive_sort
+    i, j = left, middle + 1
+    m = []
+    arr = graph.bars
+
+    while i <= middle and j <= right:
+        if events.sort_event(graph) == "Stop sort":
+            stop_recursive_sort = True
+        if stop_recursive_sort == True:
+            return None
+
+        if arr[i] < arr[j]:
+            m.append(arr[i])
+            i += 1
+        elif arr[i] > arr[j]:
+            m.append(arr[j])
+            j += 1
+        else:
+            m.append(arr[i])
+            m.append(arr[j])
+            i += 1
+            j += 1
+
+    m.extend(arr[i:middle+1])
+    m.extend(arr[j:right+ 1])
+    arr[left:right+1] = m
+
+    graph.update_bar_positions()
+    for bar in arr[left:right+1]:
+        graph.draw_single_bar(bar.position)
+    
