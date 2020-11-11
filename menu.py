@@ -25,7 +25,8 @@ def make_menu(graph):
     algorithm_options = [
         ('Bubble Sort', 'bubble', graph),
         ('Quick Sort', 'quick', graph),
-        ('Merge Sort', 'merge', graph)
+        ('Merge Sort', 'merge', graph),
+        ('Heap Sort', 'heap', graph)
     ]
 
     speed_options = [

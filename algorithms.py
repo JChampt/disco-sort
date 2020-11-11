@@ -153,3 +153,67 @@ def merge(graph, left, middle, right):
     for bar in arr[left:right+1]:
         graph.draw_single_bar(bar.position)
     
+
+class MaxHeap:
+
+    def __init__(self, graph):
+        self.graph = graph
+        self.heap = graph.bars
+        self.make_heap()
+        self.sort()
+
+
+    def extract_max(self, done = 0):
+        self.__swap(0, (len(self.heap) - 1) - done)
+        self.graph.draw_two_bars(0, (len(self.heap) - 1) - done)
+        self.heapify(0, done + 1)
+
+    def sort(self):
+        global stop_recursive_sort
+        done = 0
+        for _ in range(len(self.heap)):
+            if events.sort_event(self.graph) == "Stop sort":
+                stop_recursive_sort = True
+            if stop_recursive_sort == True:
+                return None
+
+            self.extract_max(done)
+            done += 1
+
+    def make_heap(self):
+        start = (len(self.heap) // 2) -1
+        for i in range(start, -1, -1):
+            self.heapify(i)
+
+    def heapify(self, index, done = 0):
+        global stop_recursive_sort
+        if events.sort_event(self.graph) == "Stop sort":
+            stop_recursive_sort = True
+            if stop_recursive_sort == True:
+                return None
+
+        left = (index * 2) + 1
+        right = (index * 2) + 2
+        maximum = index
+
+        if left < (len(self.heap) - done) and self.heap[left] > self.heap[maximum]:
+            maximum = left
+        if right < (len(self.heap) - done) and self.heap[right] > self.heap[maximum]:
+            maximum = right
+
+        if maximum == index:
+            return None
+        else:
+            self.__swap(index, maximum)
+            self.graph.draw_two_bars(index, maximum)
+            self.heapify(maximum, done)
+
+    def __swap(self, i, j):
+        swap_bars(self.graph, i, j)
+
+def heap_sort(graph):
+    global stop_recursive_sort
+    stop_recursive_sort = False
+    MaxHeap(graph)
+    return None
+

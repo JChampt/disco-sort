@@ -72,7 +72,6 @@ class Graph:
     
     def sort(self):
         self.draw_bars()
-        self.issorting = True
         if self.algorithm == 'bubble':
             algorithms.bubble_sort(self)
 
@@ -86,7 +85,10 @@ class Graph:
             if algorithms.stop_recursive_sort == False:
                 self.issorted = True
 
-        self.issorting = False
+        if self.algorithm == 'heap':
+            algorithms.heap_sort(self)
+            if algorithms.stop_recursive_sort == False:
+                self.issorted = True
 
     # methods to draw bar objects to the screen
     def draw_bars(self, rand_colors=False):

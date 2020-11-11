@@ -12,7 +12,8 @@ barwidths = {
 algorithms = {
     pygame.K_b:'bubble',
     pygame.K_q:'quick',
-    pygame.K_m:'merge'
+    pygame.K_m:'merge',
+    pygame.K_e:'heap'
 }
 
 def keypress(graph):
