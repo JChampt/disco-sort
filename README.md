@@ -15,7 +15,9 @@ Install Instructions:
 This relies on: 
 
 python: https://github.com/python/cpython
+
 pygame: https://github.com/pygame/pygame
+
 pygame-menu: https://github.com/ppizarror/pygame-menu
 
 So be sure to install all those. 
