@@ -24,6 +24,7 @@ def make_menu(graph):
 
     algorithm_options = [
         ('Bubble Sort', 'bubble', graph),
+        ('Insertion Sort', 'insertion', graph),
         ('Quick Sort', 'quick', graph),
         ('Merge Sort', 'merge', graph),
         ('Heap Sort', 'heap', graph)
@@ -79,15 +80,15 @@ def make_help_menu():
     )
 
     _menu.add_label(
-        "- Press 'q' for Quicksort, 'm' for Mergesort or 'b' for Bubblesort", 
-        max_char=-1, font_size=25, 
-        font_name = 'ubuntu'
-    )
-
-    _menu.add_label(
             "- Press up or down to change speed", 
             max_char=-1, font_size=25, 
             font_name = 'ubuntu'
+    )
+    
+    _menu.add_label(
+        "- Press 'q' for Quicksort, 'm' for Mergesort, 'e' for Heapsort, 'i' for Insertion sort or 'b' for Bubblesort", 
+        max_char=-1, font_size=25, 
+        font_name = 'ubuntu'
     )
 
     return _menu

@@ -75,6 +75,9 @@ class Graph:
         if self.algorithm == 'bubble':
             algorithms.bubble_sort(self)
 
+        if self.algorithm == 'insertion':
+            algorithms.insertion_sort(self)
+
         if self.algorithm == 'quick':
             algorithms.quick_sort(self, isfirst_call = True)
             if algorithms.stop_recursive_sort == False:
@@ -130,7 +133,8 @@ class Graph:
     def draw_single_bar(self, i):
         bar = self.bars[i]
         barwidth = self.screen_width // len(self.bars)
-        x, y = bar.position * barwidth, self.screen_height
+        #x, y = bar.position * barwidth, self.screen_height
+        x, y = i * barwidth, self.screen_height
 
         rects = []
         rects.append(
@@ -145,6 +149,24 @@ class Graph:
         pygame.time.delay(self.speed)
         pygame.display.update(rects)
 
+    def draw_key(self, key, i):
+        bar = key
+        barwidth = self.screen_width // len(self.bars)
+        #x, y = bar.position * barwidth, self.screen_height
+        x, y = i * barwidth, self.screen_height
+
+        rects = []
+        rects.append(
+                pygame.draw.rect(self.screen, (0,0,0), 
+                    [x, y, barwidth, -(self.screen_height)])
+                )
+        rects.append(
+                pygame.draw.rect(self.screen, bar.color, 
+                    [x, y, barwidth, -(bar.height)])
+                )
+
+        #pygame.time.delay(self.speed)
+        pygame.display.update(rects)
 
     def display_menu(self):
         self.menu.set_relative_position(50,50)
@@ -171,7 +193,7 @@ class Graph:
         self.print_text("ESC for menu or 'h' for help")
         self.print_text(
                 "Sort algorithm: " + self.algorithm,
-            location = (self.screen_width - 425, 0)
+            location = (self.screen_width - 445, 0)
         )
         self.print_text(
                 "Speed: " + self.get_speed(),

@@ -11,6 +11,7 @@ barwidths = {
 
 algorithms = {
     pygame.K_b:'bubble',
+    pygame.K_i:'insertion',
     pygame.K_q:'quick',
     pygame.K_m:'merge',
     pygame.K_e:'heap'
