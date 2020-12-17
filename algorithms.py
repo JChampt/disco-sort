@@ -11,7 +11,6 @@ def swap_bars(graph, i, j):
 
 def bubble_sort(graph):
     """ bubble sorts a graph object """
-
     bars = graph.bars
     j = 0
     while True:
@@ -42,8 +41,6 @@ def insertion_sort(graph):
                 return None
 
             arr[j+1] = arr[j]
-            #graph.erase_bar(j)
-            #key.position = j
             graph.draw_single_bar(j+1)
             graph.draw_key(key, j)
             j -= 1

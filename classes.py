@@ -98,13 +98,14 @@ class Graph:
         """ draws a bar graph from an input array of values on the screen """
         self.screen.fill(self.background_color)
         barwidth = self.screen_width // len(self.bars)
-        x, y = 0, self.screen_height
+        x = 0
+        y = lambda h: self.screen_height - h
 
         for bar in self.bars:
             if rand_colors == True or self.issorted == True:
                 if random.randint(1,100) <= 20:
                     bar.random_color() 
-            pygame.draw.rect(self.screen, bar.color, [x, y, barwidth, -(bar.height)])
+            pygame.draw.rect(self.screen, bar.color, [x, y(bar.height), barwidth, bar.height])
             x += barwidth
 
         pygame.time.delay(self.speed)
@@ -117,15 +118,14 @@ class Graph:
         barwidth = self.screen_width // len(self.bars)
         x1 = bar1.position * barwidth
         x2 = bar2.position * barwidth
-        y =  self.screen_height
+        y = lambda h: self.screen_height - h
 
         rects = []
-        rects.append(pygame.draw.rect(self.screen, (0,0,0), [x1, y, barwidth, -(self.screen_height)]))
-        rects.append(pygame.draw.rect(self.screen, bar1.color, [x1, y, barwidth, -(bar1.height)]))
+        rects.append(pygame.draw.rect(self.screen, (0,0,0), [x1, 0, barwidth, self.screen_height]))
+        rects.append(pygame.draw.rect(self.screen, bar1.color, [x1, y(bar1.height), barwidth, bar1.height]))
 
-        rects.append(pygame.draw.rect(self.screen, (0,0,0), [x2, y, barwidth, -(self.screen_height)]))
-        rects.append(pygame.draw.rect(self.screen, bar2.color, [x2, y, barwidth, -(bar2.height)]))
-
+        rects.append(pygame.draw.rect(self.screen, (0,0,0), [x2, 0, barwidth, self.screen_height]))
+        rects.append(pygame.draw.rect(self.screen, bar2.color, [x2, y(bar2.height), barwidth, bar2.height]))
 
         pygame.time.delay(self.speed)
         pygame.display.update(rects)
@@ -133,17 +133,17 @@ class Graph:
     def draw_single_bar(self, i):
         bar = self.bars[i]
         barwidth = self.screen_width // len(self.bars)
-        #x, y = bar.position * barwidth, self.screen_height
-        x, y = i * barwidth, self.screen_height
+        x = i * barwidth
+        y = lambda h: self.screen_height - h
 
         rects = []
         rects.append(
             pygame.draw.rect(self.screen, (0,0,0), 
-            [x, y, barwidth, -(self.screen_height)])
+            [x, 0, barwidth, self.screen_height])
         )
         rects.append(
             pygame.draw.rect(self.screen, bar.color, 
-            [x, y, barwidth, -(bar.height)])
+            [x, y(bar.height), barwidth, bar.height])
         )
 
         pygame.time.delay(self.speed)
@@ -152,17 +152,17 @@ class Graph:
     def draw_key(self, key, i):
         bar = key
         barwidth = self.screen_width // len(self.bars)
-        #x, y = bar.position * barwidth, self.screen_height
-        x, y = i * barwidth, self.screen_height
+        x = i * barwidth
+        y = lambda h: self.screen_height - h
 
         rects = []
         rects.append(
                 pygame.draw.rect(self.screen, (0,0,0), 
-                    [x, y, barwidth, -(self.screen_height)])
+                    [x, 0, barwidth, self.screen_height])
                 )
         rects.append(
                 pygame.draw.rect(self.screen, bar.color, 
-                    [x, y, barwidth, -(bar.height)])
+                    [x, y(bar.height), barwidth, bar.height])
                 )
 
         #pygame.time.delay(self.speed)
