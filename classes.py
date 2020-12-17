@@ -72,6 +72,7 @@ class Graph:
     
     def sort(self):
         self.draw_bars()
+        self.display_sorttext()
         if self.algorithm == 'bubble':
             algorithms.bubble_sort(self)
 
@@ -121,10 +122,10 @@ class Graph:
         y = lambda h: self.screen_height - h
 
         rects = []
-        rects.append(pygame.draw.rect(self.screen, (0,0,0), [x1, 0, barwidth, self.screen_height]))
+        rects.append(pygame.draw.rect(self.screen, (0,0,0), [x1, y(bar2.height), barwidth, bar2.height]))
         rects.append(pygame.draw.rect(self.screen, bar1.color, [x1, y(bar1.height), barwidth, bar1.height]))
 
-        rects.append(pygame.draw.rect(self.screen, (0,0,0), [x2, 0, barwidth, self.screen_height]))
+        rects.append(pygame.draw.rect(self.screen, (0,0,0), [x2, y(bar1.height), barwidth, bar1.height]))
         rects.append(pygame.draw.rect(self.screen, bar2.color, [x2, y(bar2.height), barwidth, bar2.height]))
 
         pygame.time.delay(self.speed)
@@ -139,7 +140,7 @@ class Graph:
         rects = []
         rects.append(
             pygame.draw.rect(self.screen, (0,0,0), 
-            [x, 0, barwidth, self.screen_height])
+            [x, 20, barwidth, self.screen_height - 20])
         )
         rects.append(
             pygame.draw.rect(self.screen, bar.color, 
@@ -158,7 +159,7 @@ class Graph:
         rects = []
         rects.append(
                 pygame.draw.rect(self.screen, (0,0,0), 
-                    [x, 0, barwidth, self.screen_height])
+                    [x, 20, barwidth, self.screen_height - 20])
                 )
         rects.append(
                 pygame.draw.rect(self.screen, bar.color, 
@@ -200,7 +201,16 @@ class Graph:
                 location = (self.screen_width - 165, 0)
         )
 
-
+    def display_sorttext(self):
+        self.print_text("SPACE to pause or ENTER stop sort")
+        self.print_text(
+                "Sort algorithm: " + self.algorithm,
+                location = (self.screen_width - 445, 0)
+                )
+        self.print_text(
+                "Speed: " + self.get_speed(),
+                location = (self.screen_width - 165, 0)
+                )
 class Bar:
     """ a bar in Graph to be sorted """
 

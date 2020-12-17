@@ -65,8 +65,12 @@ def sort_event(graph):
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
             graph.adjust_speed(1)
+            graph.draw_bars()
+            graph.display_sorttext()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
             graph.adjust_speed(-1)
+            graph.draw_bars()
+            graph.display_sorttext()
 
 def pause(graph):
     ispaused = True
@@ -78,3 +82,4 @@ def pause(graph):
                 ispaused = False
         pygame.time.wait(100)
     graph.draw_bars()
+    graph.display_sorttext()
