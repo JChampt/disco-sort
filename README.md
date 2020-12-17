@@ -12,11 +12,15 @@ I hope someone finds something useful/fun/interesting here.  Feel free to use th
 Install Instructions:
 --------------------
 
-This relies on pygame: https://github.com/pygame/pygame
+This relies on: 
 
-and pygame-menu: https://github.com/ppizarror/pygame-menu
+python: https://github.com/python/cpython
 
-So be sure to have both those. 
+pygame: https://github.com/pygame/pygame
+
+pygame-menu: https://github.com/ppizarror/pygame-menu
+
+So be sure to install all those. 
 After that you should just be able to run it from the command line with:
 
     $> python disco-sort.py
@@ -28,5 +32,3 @@ To do:
  - add descriptions at beginning of modules
  - add ui elements while sorting
  - add vicory animation
- - add insertion sort
-  
